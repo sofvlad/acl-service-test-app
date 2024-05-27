@@ -1,0 +1,240 @@
+openapi: 3.0.0
+info:
+    title: 'ACL Service'
+    version: '1.0.1'
+paths:
+    /api/permissions:
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RolesList'
+    /api/permission/{id}:
+        parameters:
+            - name: id
+              in: path
+              required: true
+              description: The permission identifier
+              schema:
+                type: integer
+        get:
+            requestBody:
+                content:
+                    application/json: {}
+    /api/permission/{id}/add_roles:
+        parameters:
+            - name: id
+              in: path
+              required: true
+              description: The permission identifier
+              schema:
+                type: integer
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RolesList'
+    /api/permission/{id}/remove_roles:
+        parameters:
+            - name: id
+              in: path
+              required: true
+              description: The permission identifier
+              schema:
+                type: integer
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RolesList'
+    /api/roles:
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Search'
+    /api/role/{id}:
+        parameters:
+            - name: id
+              in: path
+              required: true
+              description: The role identifier
+              schema:
+                type: integer
+        get:
+            requestBody:
+                content:
+                    application/json: {}
+    /api/role/{id}/add_users:
+        parameters:
+            - name: id
+              in: path
+              required: true
+              description: The role identifier
+              schema:
+                type: integer
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UsersList'
+    /api/role/{id}/remove_users:
+        parameters:
+            - name: id
+              in: path
+              required: true
+              description: The role identifier
+              schema:
+                type: integer
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UsersList'
+    /api/role/{id}/add_permissions:
+        parameters:
+            - name: id
+              in: path
+              required: true
+              description: The role identifier
+              schema:
+                type: integer
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PermissionsList'
+    /api/role/{id}/remove_permissions:
+        parameters:
+            - name: id
+              in: path
+              required: true
+              description: The role identifier
+              schema:
+                type: integer
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PermissionsList'
+    /api/users:
+        get:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Search'
+    /api/user/{id}:
+        parameters:
+            - name: id
+              in: path
+              required: true
+              description: The user identifier
+              schema:
+                type: integer
+        get:
+            requestBody:
+                content:
+                    application/json: {}
+    /api/user/{id}/add_roles:
+        parameters:
+            - name: id
+              in: path
+              required: true
+              description: The user identifier
+              schema:
+                type: integer
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RolesList'
+    /api/user/{id}/remove_roles:
+        parameters:
+            - name: id
+              in: path
+              required: true
+              description: The user identifier
+              schema:
+                type: integer
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RolesList'
+components:
+    schemas:
+        PermissionsList:
+            description: Array of permission ids or permission slugs
+            oneOf:
+            - $ref: '#/components/schemas/IntegerArray'
+            - $ref: '#/components/schemas/StringArray'
+        RolesList:
+            description: Array of role ids or role slugs
+            oneOf:
+            - $ref: '#/components/schemas/IntegerArray'
+            - $ref: '#/components/schemas/StringArray'
+        UsersList:
+            description: Array of user ids or user emails
+            oneOf:
+            - $ref: '#/components/schemas/IntegerArray'
+            - $ref: '#/components/schemas/StringArray'
+        Search:
+            type: object
+            additionalProperties: false
+            properties:
+                select:
+                    type: array
+                    items:
+                        type: string
+                where:
+                    type: array
+                    items:
+                        type: object
+                        required:
+                            - name
+                            - value
+                        properties:
+                            name:
+                                type: string
+                            comparison:
+                                type: string
+                                enum:
+                                - '<'
+                                - '<='
+                                - '>'
+                                - '>='
+                                - '='
+                            value:
+                                type: string
+                order:
+                    type: array
+                    items:
+                        type: object
+                        required:
+                            - name
+                            - direction
+                        properties:
+                            name:
+                                type: string
+                            direction:
+                                type: string
+                                enum: [asc, desc]
+        IntegerArray:
+            type: array
+            items:
+                type: integer
+        StringArray:
+            type: array
+            items:
+                type: string
