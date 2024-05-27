@@ -33,7 +33,7 @@ vendor/bin/phinx seed:run
 ## Endpoints
 > [!NOTE]
 > Full describe of API you can investigate in `config/api/schema.yaml`
-```
+
 Full describe `config/api/schema.yaml`
 User Endpoints
 - /api/users
